@@ -1,9 +1,11 @@
+#import dataset
 setwd("C:/Users/Mhezhye/Desktop/UoS/ASDM/COURSEWORK/Task 4")
 Tourism<-read.csv("30 Hotels Reviews.csv", header =TRUE)
 
 install.packages("tm")
 library(tm)
 
+#inspect dataset
 names(Tourism)
 head(Tourism)
 tail(Tourism)
@@ -11,6 +13,7 @@ summary(Tourism)
 str(Tourism)
 dim(Tourism)
 
+#Filter the hotels from the dataset and create 30 separate datasets
 Review_H.R_1<- subset(Tourism,Hotel.Restaurant.name=="Ann Restaurant")
 Review_H.R_2<- subset(Tourism,Hotel.Restaurant.name=="Baba Soul Food")
 Review_H.R_3<- subset(Tourism,Hotel.Restaurant.name=="Black Cat")
@@ -42,6 +45,7 @@ Review_H.R_28<-subset(Tourism,Hotel.Restaurant.name=="Toto Italian Restaurant")
 Review_H.R_29<-subset(Tourism,Hotel.Restaurant.name=="Vista")
 Review_H.R_30<-subset(Tourism,Hotel.Restaurant.name=="You and Me Patong")
 
+#inspect the review column
 head(Review_H.R_1$Review)
 head(Review_H.R_2$Review)
 head(Review_H.R_3$Review)
@@ -73,6 +77,7 @@ head(Review_H.R_28$Review)
 head(Review_H.R_29$Review)
 head(Review_H.R_30$Review)
 
+#create text vectors
 H.R_1<-Review_H.R_1$Review
 H.R_2<-Review_H.R_2$Review
 H.R_3<-Review_H.R_3$Review
@@ -104,6 +109,7 @@ H.R_28<-Review_H.R_28$Review
 H.R_29<-Review_H.R_29$Review
 H.R_30<-Review_H.R_30$Review
 
+#convert all texts to lower case
 H.R_1<-tolower(H.R_1)
 H.R_2<-tolower(H.R_2)
 H.R_3<-tolower(H.R_3)
@@ -135,6 +141,7 @@ H.R_28<-tolower(H.R_28)
 H.R_29<-tolower(H.R_29)
 H.R_30<-tolower(H.R_30)
 
+#remove links from review
 H.R_1<-gsub("http\\S+\\s*","", H.R_1)
 H.R_2<-gsub("http\\S+\\s*","",H.R_2)
 H.R_3<-gsub("http\\S+\\s*","",H.R_3)
@@ -166,6 +173,7 @@ H.R_28<-gsub("http\\S+\\s*","",H.R_28)
 H.R_29<-gsub("http\\S+\\s*","",H.R_29)
 H.R_30<-gsub("http\\S+\\s*","",H.R_30)
 
+#remove punctuations from review
 H.R_1<-gsub("[[:punct:]]","", H.R_1)
 H.R_2<-gsub("[[:punct:]]","",H.R_2)
 H.R_3<-gsub("[[:punct:]]","",H.R_3)
@@ -197,6 +205,7 @@ H.R_28<-gsub("[[:punct:]]","",H.R_28)
 H.R_29<-gsub("[[:punct:]]","",H.R_29)
 H.R_30<-gsub("[[:punct:]]","",H.R_30)
 
+#remove blank spaces at the beginning of review
 H.R_1<-gsub("^ ","",H.R_1)
 H.R_2<-gsub("^ ","",H.R_2)
 H.R_3<-gsub("^ ","",H.R_3)
@@ -228,6 +237,7 @@ H.R_28<-gsub("^ ","",H.R_28)
 H.R_29<-gsub("^ ","",H.R_29)
 H.R_30<-gsub("^ ","",H.R_30)
 
+#remove blank spaces at the end of review
 H.R_1<-gsub(" $","",H.R_1)
 H.R_2<-gsub(" $","",H.R_2)
 H.R_3<-gsub(" $","",H.R_3)
@@ -259,6 +269,7 @@ H.R_28<-gsub(" $","",H.R_28)
 H.R_29<-gsub(" $","",H.R_29)
 H.R_30<-gsub(" $","",H.R_30)
 
+#remove 'restaurant' from the review
 H.R_1<-gsub("restaurant","",H.R_1)
 H.R_2<-gsub("restaurant","",H.R_2)
 H.R_3<-gsub("restaurant","",H.R_3)
@@ -290,6 +301,7 @@ H.R_28<-gsub("restaurant","",H.R_28)
 H.R_29<-gsub("restaurant","",H.R_29)
 H.R_30<-gsub("restaurant","",H.R_30)
 
+#remove 'place' from the review
 H.R_1<-gsub("place","",H.R_1)
 H.R_2<-gsub("place","",H.R_2)
 H.R_3<-gsub("place","",H.R_3)
@@ -321,6 +333,7 @@ H.R_28<-gsub("place","",H.R_28)
 H.R_29<-gsub("place","",H.R_29)
 H.R_30<-gsub("place","",H.R_30)
 
+#inspect vectors after cleaning
 head(H.R_1)
 head(H.R_2)
 head(H.R_3)
@@ -352,6 +365,7 @@ head(H.R_28)
 head(H.R_29)
 head(H.R_30)
 
+#convert vectors to corpus
 Corpus_H.R_1 <- Corpus(VectorSource(H.R_1))
 Corpus_H.R_2 <- Corpus(VectorSource(H.R_2))
 Corpus_H.R_3 <- Corpus(VectorSource(H.R_3))
@@ -383,6 +397,7 @@ Corpus_H.R_28 <- Corpus(VectorSource(H.R_28))
 Corpus_H.R_29 <- Corpus(VectorSource(H.R_29))
 Corpus_H.R_30 <- Corpus(VectorSource(H.R_30))
 
+#Inspect corpus
 Corpus_H.R_1 
 Corpus_H.R_2 
 Corpus_H.R_3 
@@ -414,6 +429,7 @@ Corpus_H.R_28
 Corpus_H.R_29 
 Corpus_H.R_30 
 
+#cleanup corpus by removing stop words and whitespaces
 Corpus_H.R_1 <- tm_map(Corpus_H.R_1, removeWords, stopwords("english"))
 Corpus_H.R_1 <- tm_map(Corpus_H.R_1,stripWhitespace)
 inspect(Corpus_H.R_1)
@@ -508,6 +524,7 @@ inspect(Corpus_H.R_30)
 install.packages("SnowballC")
 library(SnowballC)
 
+#stem the words to their root of all reviews present in the corpus
 Stem_Corpus_H.R_1 <- tm_map(Corpus_H.R_1, stemDocument)
 Stem_Corpus_H.R_2 <- tm_map(Corpus_H.R_2, stemDocument)
 Stem_Corpus_H.R_3 <- tm_map(Corpus_H.R_3, stemDocument)
@@ -539,9 +556,11 @@ Stem_Corpus_H.R_28 <- tm_map(Corpus_H.R_28, stemDocument)
 Stem_Corpus_H.R_29 <- tm_map(Corpus_H.R_29, stemDocument)
 Stem_Corpus_H.R_30 <- tm_map(Corpus_H.R_30, stemDocument)
 
+#load negative and positive lexicon data
 positive_lexicon <- read.csv("positive-lexicon.txt")
 negative_lexicon <- read.csv("negative-lexicon.txt")
 
+#inspect lexicons
 head(positive_lexicon)
 tail(positive_lexicon)
 head(negative_lexicon)
@@ -550,29 +569,39 @@ tail(negative_lexicon)
 install.packages("wordcloud")
 library(wordcloud)
 
+#create function for sentiment analysis
 Sentiment_func <- function(stem_corpus)
 {
+  #generate wordcloud
   wordcloud(stem_corpus, min.freq = 3, 
             colors = brewer.pal(8,"Dark2"), 
             random.color = TRUE, max.words = 20)
+  #calculate count of total +ive and -ive words in each review
+  
+  #create variables and vectors
   total_positive_count <- 0
   total_negative_count <- 0
   positive_count_vector <- c()
   negative_count_vector <- c()
   
+ #calc the size of the corpus
   size_of_corpus <- length(stem_corpus)
 
 for (i in 1: size)
 {
+  #all the words in current review
   All_corpus_words<-list(strsplit(stem_corpus[[i]]$content, split= " "))
   
+#positive words in current review
 positive_word_count<- length(intersect(unlist(All_corpus_words),unlist(positive_lexicon)))
+#negative words in current review
 negative_word_count<- length(intersect(unlist(All_corpus_words),unlist(negative_lexicon)))
 
 total_positive_count <- total_positive_count+positive_word_count
 total_negative_count <- total_negative_count+negative_word_count
 
 }
+  #calc the overall percentage of +ive and -ive words of all reviews
   total_positive_count
   total_negative_count
   total_count<- total_positive_count+total_negative_count
@@ -581,6 +610,7 @@ total_negative_count <- total_negative_count+negative_word_count
   Negative_percentage<-(total_negative_count*100)/ total_count
   Positive_percentage
   
+ #create a dataframe
   df<-data.frame(Review_Type= c("Positive","Negative"),
                    Count= c(total_positive_count, total_negative_count  ))
   print(df)
@@ -591,6 +621,7 @@ total_negative_count <- total_negative_count+negative_word_count
   
 }
 
+#use the sentiment_func() function to calculate percentage of positive reviews and wordcloud
 Sentiment_func(Stem_Corpus_H.R_1)
 Sentiment_func(Stem_Corpus_H.R_2)
 Sentiment_func(Stem_Corpus_H.R_3)
@@ -627,6 +658,7 @@ library(sentimentr)
 install.packages("tidyverse")
 library(tidyverse)
 
+#plot negative and positive sentiment 
 Tourism %>%
   get_sentences() %>%
   sentiment() -> Tour_senti
@@ -634,6 +666,7 @@ Tourism %>%
 Tour_senti %>%
   ggplot()+geom_boxplot(aes(y=Hotel.Restaurant.name, x=sentiment))
 
+#generate a web sentiment analysis
 Tour_senti %>%
   mutate(polarity_level =ifelse(sentiment> 0, "Positive","Negative")) %>%
   count(Hotel.Restaurant.name, polarity_level) %>%
